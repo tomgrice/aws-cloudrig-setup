@@ -1,18 +1,18 @@
-$ErrorActionPreference = 'SilentlyContinue'
+Set-ExecutionPolicy Unrestricted -Confirm:$false -Force
 $WarningPreference = 'SilentlyContinue'
-Clear-Host
+
 
 <# Import Configuration File #>
 $Config = Import-PowerShellDataFile .\Config.psd1
 
-<# Install required AWS Tools Modules #>
-if(!(Get-Module AWS.Tools.EC2 -ListAvailable)) {
-    Install-Module AWS.Tools.EC2 -Confirm:$False -Force
+<# Install required AWS Tools Modules 
+if(!(Get-Module AWS.Tools.Installer -ListAvailable)) {
+  Install-Module -Name AWS.Tools.Installer -Confirm:$false -Force -Scope AllUsers -Wait
 }
 
-if(!(Get-Module AWS.Tools.SimpleSystemsManagement -ListAvailable)) {
-    Install-Module AWS.Tools.SimpleSystemsManagement -Confirm:$False -Force
-}
+Install-AWSToolsModule AWS.Tools.EC2,AWS.Tools.SimpleSystemsManagement -Confirm:$false -Scope AllUsers
+
+Clear-Host
 
 <# Function to display cool loading spinner whilst a command is running. #>
 function Load {

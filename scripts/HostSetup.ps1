@@ -18,7 +18,7 @@ function Load {
             $i = 0;
         }   
     }
-    Write-Host -NoNewLine "`r                              "
+    Write-Host -NoNewLine "`r                                                       "
 }
 
 #Disable Password Complexity

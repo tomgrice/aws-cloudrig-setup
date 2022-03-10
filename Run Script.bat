@@ -1,1 +1,1 @@
-@start "" "utils\alacritty-portable.exe" --config-file utils\alacritty.yml -e pwsh -ExecutionPolicy Bypass -File .\scripts\Start.ps1
+@start "" pwsh -WindowStyle Hidden -File .\scripts\Run.ps1
