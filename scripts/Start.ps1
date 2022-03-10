@@ -1,11 +1,11 @@
-Set-ExecutionPolicy Unrestricted -Confirm:$false -Force
 $WarningPreference = 'SilentlyContinue'
+$ErrorActionPreference = 'SilentlyContinue'
 
 
 <# Import Configuration File #>
 $Config = Import-PowerShellDataFile .\Config.psd1
 
-<# Install required AWS Tools Modules 
+<# Install required AWS Tools Modules #>
 if(!(Get-Module AWS.Tools.Installer -ListAvailable)) {
   Install-Module -Name AWS.Tools.Installer -Confirm:$false -Force -Scope AllUsers -Wait
 }
