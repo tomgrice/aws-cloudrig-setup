@@ -1,1 +1,1 @@
-@start "" "utils\alacritty-portable.exe" --config-file utils\alacritty.yml -e pwsh .\scripts\Start.ps1
+@start "" "utils\alacritty-portable.exe" --config-file utils\alacritty.yml -e pwsh -ExecutionPolicy Bypass -File .\scripts\Start.ps1

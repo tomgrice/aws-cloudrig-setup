@@ -1,11 +1,17 @@
+$ErrorActionPreference = 'SilentlyContinue'
+$WarningPreference = 'SilentlyContinue'
 Clear-Host
 
 <# Import Configuration File #>
 $Config = Import-PowerShellDataFile .\Config.psd1
 
-<# Install required AWS Tools Module #>
+<# Install required AWS Tools Modules #>
 if(!(Get-Module AWS.Tools.EC2 -ListAvailable)) {
     Install-Module AWS.Tools.EC2 -Confirm:$False -Force
+}
+
+if(!(Get-Module AWS.Tools.SimpleSystemsManagement -ListAvailable)) {
+    Install-Module AWS.Tools.SimpleSystemsManagement -Confirm:$False -Force
 }
 
 <# Function to display cool loading spinner whilst a command is running. #>
@@ -63,9 +69,13 @@ $SecGroup = New-EC2SecurityGroup -AccessKey $Config['AWS_AccessKey'] -SecretKey 
 Grant-EC2SecurityGroupIngress -AccessKey $Config['AWS_AccessKey'] -SecretKey $Config['AWS_SecretKey'] -Region $Config['AWS_Region'] `
     -GroupId $($SecGroup) -IpPermission @{'IpProtocol' = '-1'; 'IpRanges' = '0.0.0.0/0'}
 
+<# Get AMI image id #>
+$AMI_ImageId = Get-SSMLatestEC2Image -AccessKey $Config['AWS_AccessKey'] -SecretKey $Config['AWS_SecretKey'] -Region $Config['AWS_Region'] `
+    -Path ami-windows-latest -ImageName $($Config.AMI_ImageName)
+
 <# Create new instance #>
 $NewInstance = New-EC2Instance -AccessKey $Config['AWS_AccessKey'] -SecretKey $Config['AWS_SecretKey'] -Region $Config['AWS_Region'] `
-    -ImageId $Config['AMI_ImageId'] `
+    -ImageId $AMI_ImageId `
     -UserDataFile ".\scripts\Launch_UserData.txt" -EncodeUserData `
     -BlockDeviceMapping @( @{DeviceName="/dev/sda1";Ebs=$Image_ebsBlock} ) `
     -InstanceType 'g4dn.xlarge' `
