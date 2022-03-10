@@ -1,0 +1,1 @@
+@start "" "utils\alacritty-portable.exe" --config-file utils\alacritty.yml -e pwsh .\scripts\Start.ps1
